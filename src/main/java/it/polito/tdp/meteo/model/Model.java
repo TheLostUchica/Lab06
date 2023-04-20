@@ -30,7 +30,7 @@ public class Model {
 
 	// of course you can change the String output with what you think works best
 	public String getUmiditaMedia(int mese) {
-		this.mese = mese;
+		
 		String s="";
 		for (Citta c : citta) {
 			s += c.getNome() + ": " + dao.getUmiditaMedia(mese, c.getNome()) + "\n";
@@ -46,6 +46,7 @@ public class Model {
 	
 	// of course you can change the String output with what you think works best
 	public String trovaSequenza(int mese) {
+		this.mese = mese;
 		
 		sequenza = new LinkedList<>();
 		parziale = new LinkedList<>();
@@ -56,6 +57,7 @@ public class Model {
 		for(Citta c : sequenza) {
 			s += c.getNome()+" \n";
 		}
+		System.out.println(calcolaCosto(sequenza));
 		return s;
 	}
 
@@ -160,12 +162,14 @@ public class Model {
 	
 	private double calcolaCosto(LinkedList<Citta> parziale) {
 		double costo = 0;
-		for(int i= 1; i<parziale.size(); i++) {
-			if(!parziale.get(i).equals(parziale.get(i-1))){
-				costo += 100;
+		for(int i= 0; i<parziale.size(); i++) {
+			if(i!=0) {
+				if(!parziale.get(i).equals(parziale.get(i-1))){
+					costo += 100;
+				}
 			}
 			for(Rilevamento r : rilevamenti) {
-				if (r.getData().getMonthValue()==mese && parziale.get(i).getNome().compareTo(r.getLocalita())==0 && r.getData().getDayOfMonth()==i) {
+				if (r.getData().getMonthValue()==mese && parziale.get(i).getNome().compareTo(r.getLocalita())==0 && r.getData().getDayOfMonth()==i+1) {
 					costo += r.getUmidita();
 				}
 			}
